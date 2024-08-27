@@ -10,8 +10,24 @@ services:
       - ./nginx/conf/:/etc/nginx/conf.d/:ro
       - ./certbot/www/:/var/www/certbot/:ro
       - ./certbot/conf/:/etc/letsencrypt/:ro
+    depends_on:
+      - php
+    networks:
+      - web
+
   certbot:
     image: certbot/certbot:latest
     volumes:
       - ./certbot/www/:/var/www/certbot/:rw
       - ./certbot/conf/:/etc/letsencrypt/:rw
+
+  php:
+    image: php:8.2-fpm-alpine
+    container_name: php-fpm
+    volumes:
+      - ./php:/var/www/html
+    networks:
+      - web
+networks:
+  web:
+    external: false
