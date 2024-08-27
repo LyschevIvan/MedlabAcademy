@@ -1,0 +1,29 @@
+version: '3.7'
+
+services:
+
+  php-apache:
+    build: .
+    ports:
+      - "7070:80"
+    restart: always
+
+  nginx:
+    image: umputun/nginx-le:latest
+    hostname: nginx
+    restart: always
+    container_name: nginx
+    depends_on:
+      - "php-apache"
+    volumes:
+      - ./etc/ssl:/etc/nginx/ssl
+      - ./etc/service.conf:/etc/nginx/service.conf
+    ports:
+      - "80:80"
+      - "443:443"
+
+    environment:
+      - TZ=GMT
+      - LETSENCRYPT=true
+      - LE_EMAIL=ivan030400@yandex.ru
+      - LE_FQDN=medlab-academy.ru
