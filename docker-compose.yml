@@ -24,6 +24,7 @@ services:
   php:
     image: php:8.2-fpm-alpine
     container_name: php-fpm
+    restart: always
     volumes:
       - ./php:/var/www/html
     networks:
